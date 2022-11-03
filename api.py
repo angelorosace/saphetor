@@ -27,7 +27,7 @@ api=Api(app)
 api.add_resource(Result,'/result')
 
 if __name__ == '__main__':
-    app.run()
+    app.run() #run app
 
 
 
