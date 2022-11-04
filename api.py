@@ -1,19 +1,14 @@
-import mimetypes
 from flask import Flask,request,make_response,Response
 from dict2xml import dict2xml
 from flask_restful import Resource, Api
 from flask_paginate import get_page_args
 import pandas as pd
-import io
 
 #Auxiliary function to read the vcf file
 def read_vcf(path):
     with open(path, 'r') as f:
         lines = [l.rstrip('\n').split('\t') for l in f if not l.startswith('##')]
     return pd.DataFrame(lines[1:],columns=[x if '#' not in x else 'CHROM' for x in lines[0]])
-
-
-etag=''
 
 # Instantiate Result class
 class Result(Resource):
