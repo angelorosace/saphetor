@@ -61,7 +61,7 @@ class Result(Resource):
         #If there are more fields that are not in the database throw an error
         extra_fields=set(list(body.keys()))-set(all_fields)
         if len(extra_fields)>0:
-            errors['message'].append('Request body is missing this requiered field(s):'+str(list(missing_fields)))
+            errors['message'].append('Request body has some extra unsupported field(s):'+str(list(extra_fields)))
             return errors
         
         #Check that CHROM field is correctly formed (must start with 'chr' and end with either 'X,Y or M' or with a number between 1 and 22)
