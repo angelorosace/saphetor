@@ -105,7 +105,10 @@ class Result(Resource):
         page,per_page,_ = get_page_args(page_parameter='page',per_page_parameter='per_page')
 
         if page==0:
-            return {'error':'page parameter, if specified cannot be lower than 1'},400
+            return {'error':'page parameter, if specified, cannot be lower than 1'},400
+        
+        if per_page<0:
+            return {'error':'per_page parameter, if specified, cannot be lower than 0'},400
 
         id = request.args.get('id')
 
