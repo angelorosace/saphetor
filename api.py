@@ -51,9 +51,16 @@ class Result(Resource):
         '''
         errors=collections.defaultdict(list)
         expected_fields=['CHROM','ID','POS','ALT','REF'] #List of the field we want to see in the payload
+        all_fields=['CHROM','POS','ID','REF','ALT','QUAL','FILTER','INFO','FORMAT','NA12877 single 20180302'] #List of all the fields in the database
         missing_fields=set(expected_fields)-set(list(body.keys()))
         #If there is any missing field return an error
         if len(missing_fields)>0:
+            errors['message'].append('Request body is missing this requiered field(s):'+str(list(missing_fields)))
+            return errors
+        
+        #If there are more fields that are not in the database throw an error
+        extra_fields=set(list(body.keys()))-set(all_fields)
+        if len(extra_fields)>0:
             errors['message'].append('Request body is missing this requiered field(s):'+str(list(missing_fields)))
             return errors
         
@@ -105,8 +112,8 @@ class Result(Resource):
         page,per_page,_ = get_page_args(page_parameter='page',per_page_parameter='per_page')
 
         if page==0:
-            return {'error':'page parameter, if specified, cannot be lower than 1'},400
-        
+            return {'error':'page parameter, if specified, must be an integer and cannot be lower than 1'},400
+
         if per_page<0:
             return {'error':'per_page parameter, if specified, cannot be lower than 0'},400
 
